@@ -19,13 +19,17 @@ header {
 
 h1,
 p {
-  font-size: 3vmin;
+  font-size: 5vmin;
   font-weight: 100;
   margin: 0;
 }
 
+h1.final-Msg {
+  font-size: 5vmin;
+}
+
 p.turn {
-  font-size: 6vmin;
+  font-size: 5vmin;
 }
 
 #board {

@@ -25,48 +25,59 @@ const messageEl = document.querySelector('h1');
 const turnMsg = document.querySelector('p');
 const playAgainBtn = document.querySelector('button');
 const boardEls = document.querySelectorAll('div');
-console.log(boardEls);
 
 /*----- event listeners -----*/
+// function playAgain() {
 boardEls.forEach(function (cell) {
-  cell.addEventListener('click', play, { once: true });
+  cell.addEventListener('click', play);
 });
+// }
 playAgainBtn.addEventListener('click', init);
 
 /*----- functions -----*/
 init();
+// playAgain();
 
 // Initialize all state, then call render()
 function init() {
   board = ['', '', '', '', '', '', '', '', ''];
   turn = 1;
   winner = null;
-  //   render();
+  boardEls.forEach(function (cell) {
+    cell.innerText = '';
+    cell.classList.remove('X', 'O');
+  });
+  messageEl.style.display = 'block';
+  messageEl.innerText = 'Start the game by clicking the game board';
+  turnMsg.style.display = 'block';
+  turnMsg.innerHTML = `<span style="color: #4763ff">${marks['-1']}</span> starts first😎`;
+  playAgainBtn.style.visibility = 'hidden';
+  render();
 }
 
 function play(e) {
   console.log('clicked');
   const cell = e.target;
   //   console.log(cell);
+  if (cell.innerText != '') return;
 
-  if (turn === 0) return;
+  if (winner !== null) return;
+
   turn *= -1;
   //   console.log(turn);
 
   messageEl.style.display = 'none';
-  checkWin(turn);
+  checkWin();
   renderBoard(cell, turn);
+  render();
 }
 
-function checkWin(turn) {
-    return winningCombinations.
+function render() {
+  renderBoard();
+  checkWin();
+  draw(boardEls);
+  renderMessage(winner);
 }
-
-// function render() {
-//   renderBoard();
-//   renderMessage();
-//   renderControls();
-// }
 
 function renderBoard(cell, turn) {
   if (turn === 1) {
@@ -82,12 +93,59 @@ function renderBoard(cell, turn) {
   }
 }
 
-function renderMessage() {
+function draw() {
+  const isDraw = Array.from(boardEls).every((square) => {
+    return square.classList.contains('X') || square.classList.contains('O');
+  });
+  if (isDraw) {
+    if (winner !== 1 && winner !== -1) {
+      winner = 'T';
+    }
+  }
+  renderMessage(winner);
+}
+
+function checkWin() {
+  const squares = document.querySelectorAll('.square');
+  let xWins;
+  let oWins;
+  winningCombinations.forEach((array) => {
+    xWins = array.every((box) => squares[box].classList.contains('X'));
+    if (xWins) {
+      winner = 1;
+      return;
+    }
+  });
+
+  winningCombinations.forEach((array) => {
+    oWins = array.every((box) => squares[box].classList.contains('O'));
+    if (oWins) {
+      winner = -1;
+      return;
+    }
+  });
+
+  renderMessage(winner);
+}
+
+function renderMessage(winner) {
   if (winner === 'T') {
+    messageEl.style.display = 'block';
     messageEl.innerText = "It's a Tie 😲";
-  } else if (winner) {
-    messageEl.innerHTML = `${marks[winner]} Won!`;
+    turnMsg.style.display = 'none';
+  } else if (winner === 1) {
+    messageEl.style.display = 'block';
+    messageEl.innerHTML = `<span style ="color:#cf262d">X</span> Won!🎉`;
+    turnMsg.style.display = 'none';
+  } else if (winner === -1) {
+    messageEl.style.display = 'block';
+    messageEl.innerHTML = `<span style ="color:#4763ff">O</span> Won!🎊`;
+    turnMsg.style.display = 'none';
+  }
+
+  if (winner !== null) {
+    playAgainBtn.style.visibility = 'visible';
   } else {
-    messageEl.innerHTML = `${marks[turn]} Won!`;
+    playAgainBtn.style.visibility = 'hidden';
   }
 }
