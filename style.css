@@ -1,0 +1,65 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Bagel Fat One', cursive;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header {
+  font-size: 11vmin;
+  letter-spacing: 1vmin;
+}
+
+h1,
+p {
+  font-size: 3vmin;
+  font-weight: 100;
+  margin: 0;
+}
+
+p.turn {
+  font-size: 6vmin;
+}
+
+#board {
+  display: grid;
+  grid-gap: 7px;
+  grid-template-columns: repeat(3, 20vmin);
+  grid-template-rows: repeat(3, 20vmin);
+  margin: 5vmin;
+  background-color: #e5e5e5;
+}
+
+#board > div {
+  background-color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+button {
+  font-size: 2vmin;
+  padding: 1vmin 1vmin 1vmin 2vmin;
+  letter-spacing: 1vmin;
+}
+
+.O {
+  font-size: 14vmin;
+  color: #4763ff;
+  padding-bottom: 2vmin;
+}
+
+.X {
+  font-size: 14vmin;
+  color: #cf262d;
+  padding-bottom: 2vmin;
+}
